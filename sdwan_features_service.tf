@@ -101,7 +101,7 @@ resource "sdwan_service_routing_bgp_feature" "service_routing_bgp_feature" {
   ipv4_redistributes = try(length(each.value.bgp.ipv4_redistributes) == 0, true) ? null : [for redistribute in each.value.bgp.ipv4_redistributes : {
     metric                        = try(redistribute.metric, null)
     metric_variable               = try("{{${redistribute.metric_variable}}}", null)
-    ospf_match_route              = try(redistribute.ospf_match_route, null)
+    ospf_match_route              = try([for route in redistribute.ospf_match_route : "${upper(substr(route, 0, 1))}${substr(route, 1, -1)}"], null)
     ospf_match_route_variable     = try("{{${redistribute.ospf_match_route_variable}}}", null)
     protocol                      = try(redistribute.protocol, null)
     protocol_variable             = try("{{${redistribute.protocol_variable}}}", null)
@@ -182,7 +182,7 @@ resource "sdwan_service_routing_bgp_feature" "service_routing_bgp_feature" {
   ipv6_redistributes = try(length(each.value.bgp.ipv6_redistributes) == 0, true) ? null : [for redistribute in each.value.bgp.ipv6_redistributes : {
     metric                        = try(redistribute.metric, null)
     metric_variable               = try("{{${redistribute.metric_variable}}}", null)
-    ospf_match_route              = try(redistribute.ospf_match_route, null)
+    ospf_match_route              = try([for route in redistribute.ospf_match_route : "${upper(substr(route, 0, 1))}${substr(route, 1, -1)}"], null)
     ospf_match_route_variable     = try("{{${redistribute.ospf_match_route_variable}}}", null)
     protocol                      = try(redistribute.protocol, null)
     protocol_variable             = try("{{${redistribute.protocol_variable}}}", null)
@@ -892,7 +892,7 @@ resource "sdwan_service_lan_vpn_interface_ethernet_feature" "service_lan_vpn_int
   autonegotiate_variable         = try("{{${each.value.interface.autonegotiate_variable}}}", null)
   duplex                         = try(each.value.interface.duplex, null)
   duplex_variable                = try("{{${each.value.interface.duplex_variable}}}", null)
-  enable_dhcpv6                  = try(each.value.interface.ipv6_configuration_type, null) == "dynamic" ? true : null
+  enable_dhcpv6                  = try(each.value.interface.ipv6_address_type, null) == "dynamic" ? true : null
   icmp_redirect_disable          = try(each.value.interface.icmp_redirect_disable, null)
   icmp_redirect_disable_variable = try("{{${each.value.interface.icmp_redirect_disable_variable}}}", null)
   interface_description          = try(each.value.interface.interface_description, null)
@@ -907,7 +907,8 @@ resource "sdwan_service_lan_vpn_interface_ethernet_feature" "service_lan_vpn_int
   ip_mtu_variable                = try("{{${each.value.interface.ip_mtu_variable}}}", null)
   ipv4_address                   = try(each.value.interface.ipv4_address, null)
   ipv4_address_variable          = try("{{${each.value.interface.ipv4_address_variable}}}", null)
-  ipv4_address_type              = try(each.value.interface.ipv4_configuration_type, local.defaults.sdwan.feature_profiles.service_profiles.lan_vpns.ethernet_interfaces.ipv4_configuration_type)
+  ipv4_address_type              = try(each.value.interface.ipv4_address_type, null)
+  ipv4_address_type_variable     = try("{{${each.value.interface.ipv4_address_type_variable}}}", null)
   ipv4_dhcp_distance             = try(each.value.interface.ipv4_dhcp_distance, null)
   ipv4_dhcp_distance_variable    = try("{{${each.value.interface.ipv4_dhcp_distance_variable}}}", null)
   ipv4_dhcp_helper               = try(each.value.interface.ipv4_dhcp_helpers, null)
@@ -952,20 +953,21 @@ resource "sdwan_service_lan_vpn_interface_ethernet_feature" "service_lan_vpn_int
       decrement_value_variable = try("{{${obj.decrement_value_variable}}}", null)
     }]
   }]
-  ipv6_address          = try(each.value.interface.ipv6_address, null)
-  ipv6_address_variable = try("{{${each.value.interface.ipv6_address_variable}}}", null)
-  ipv6_address_type     = try(each.value.interface.ipv6_configuration_type, local.defaults.sdwan.feature_profiles.service_profiles.lan_vpns.ethernet_interfaces.ipv6_configuration_type) == "none" ? null : try(each.value.interface.ipv6_configuration_type, local.defaults.sdwan.feature_profiles.service_profiles.lan_vpns.ethernet_interfaces.ipv6_configuration_type)
+  ipv6_address               = try(each.value.interface.ipv6_address, null)
+  ipv6_address_variable      = try("{{${each.value.interface.ipv6_address_variable}}}", null)
+  ipv6_address_type          = try(each.value.interface.ipv6_address_type, null)
+  ipv6_address_type_variable = try("{{${each.value.interface.ipv6_address_type_variable}}}", null)
   ipv6_dhcp_helpers = try(length(each.value.interface.ipv6_dhcp_helpers) == 0, true) ? null : [for helper in each.value.interface.ipv6_dhcp_helpers : {
     address                    = try(helper.address, null)
     address_variable           = try("{{${helper.address_variable}}}", null)
     dhcpv6_helper_vpn          = try(helper.vpn_id, null)
     dhcpv6_helper_vpn_variable = try("{{${helper.vpn_id_variable}}}", null)
   }]
-  ipv6_dhcp_secondary_addresses = try(length(each.value.interface.ipv6_dhcp_secondary_addresses) == 0, true) ? null : [for addr in each.value.interface.ipv6_dhcp_secondary_addresses : {
+  ipv6_dhcp_secondary_addresses = try(length(each.value.interface.ipv6_dynamic_secondary_addresses) == 0, true) ? null : [for addr in each.value.interface.ipv6_dynamic_secondary_addresses : {
     address          = try(addr.address, null)
     address_variable = try("{{${addr.address_variable}}}", null)
   }]
-  ipv6_secondary_addresses = try(length(each.value.interface.ipv6_secondary_addresses) == 0, true) ? null : [for addr in each.value.interface.ipv6_secondary_addresses : {
+  ipv6_secondary_addresses = try(length(each.value.interface.ipv6_static_secondary_addresses) == 0, true) ? null : [for addr in each.value.interface.ipv6_static_secondary_addresses : {
     address          = try(addr.address, null)
     address_variable = try("{{${addr.address_variable}}}", null)
   }]
