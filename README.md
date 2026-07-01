@@ -41,7 +41,7 @@ module "sdwan" {
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.3.0 |
 | <a name="requirement_sdwan"></a> [sdwan](#requirement\_sdwan) | >= 0.11.1 |
-| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.0.2, < 2.0.0 |
+| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 2.0.1, < 3.0.0 |
 
 ## Inputs
 
@@ -270,6 +270,7 @@ module "sdwan" {
 | [sdwan_transport_wan_vpn_interface_gre_feature.transport_wan_vpn_interface_gre_feature](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/transport_wan_vpn_interface_gre_feature) | resource |
 | [sdwan_transport_wan_vpn_interface_gre_feature_associate_tracker_feature.transport_wan_vpn_interface_gre_feature_associate_tracker_feature](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/transport_wan_vpn_interface_gre_feature_associate_tracker_feature) | resource |
 | [sdwan_transport_wan_vpn_interface_ipsec_feature.transport_wan_vpn_interface_ipsec_feature](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/transport_wan_vpn_interface_ipsec_feature) | resource |
+| [sdwan_transport_wan_vpn_interface_ipsec_feature_associate_tracker_feature.transport_wan_vpn_interface_ipsec_feature_associate_tracker_feature](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/transport_wan_vpn_interface_ipsec_feature_associate_tracker_feature) | resource |
 | [sdwan_vpn_interface_cellular_feature_template.vpn_interface_cellular_feature_template](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/vpn_interface_cellular_feature_template) | resource |
 | [sdwan_vpn_interface_svi_feature_template.vpn_interface_svi_feature_template](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/vpn_interface_svi_feature_template) | resource |
 | [sdwan_vpn_list_policy_object.vpn_list_policy_object](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/vpn_list_policy_object) | resource |
@@ -277,6 +278,8 @@ module "sdwan" {
 | [sdwan_zone_based_firewall_policy_definition.zone_based_firewall_policy_definition](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/zone_based_firewall_policy_definition) | resource |
 | [sdwan_zone_list_policy_object.zone_list_policy_object](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/zone_list_policy_object) | resource |
 | [terraform_data.validation](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
+| [sdwan_policy_object_feature_profile_parcels.system_app_list](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/data-sources/policy_object_feature_profile_parcels) | data source |
+| [sdwan_policy_object_feature_profile_parcels.system_data_prefix](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/data-sources/policy_object_feature_profile_parcels) | data source |
 
 ## Modules
 
