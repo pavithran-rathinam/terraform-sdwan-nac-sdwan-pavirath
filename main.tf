@@ -1,4 +1,5 @@
 locals {
+  application_catalog    = try(local.model.sdwan.application_catalog, {})
   edge_feature_templates = try(local.model.sdwan.edge_feature_templates, {})
   edge_device_templates  = try(local.model.sdwan.edge_device_templates, {})
   localized_policies     = try(local.model.sdwan.localized_policies, {})
@@ -8,8 +9,10 @@ locals {
   centralized_policies   = try(local.model.sdwan.centralized_policies, {})
   configuration_groups   = try(local.model.sdwan.configuration_groups, {})
   feature_profiles       = try(local.model.sdwan.feature_profiles, {})
+  network_hierarchy      = try(local.model.sdwan.network_hierarchy, {})
   policy_groups          = try(local.model.sdwan.policy_groups, {})
   settings               = try(local.model.sdwan.settings, {})
+  topology_groups        = try(local.model.sdwan.topology_groups, {})
   device_type_map = {
     "C8000V" : "vedge-C8000V"
     "C8300-1N1S-4T2X" : "vedge-C8300-1N1S-4T2X"

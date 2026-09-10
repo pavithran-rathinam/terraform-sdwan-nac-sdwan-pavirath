@@ -1,4 +1,3 @@
-
 resource "sdwan_policy_group" "policy_group" {
   for_each    = { for p in local.policy_groups : p.name => p }
   name        = each.value.name
@@ -8,23 +7,33 @@ resource "sdwan_policy_group" "policy_group" {
     try(sdwan_policy_object_feature_profile.policy_object_feature_profile[0].id, []),
     try(each.value.application_priority, null) == null ? [] : [sdwan_application_priority_feature_profile.application_priority_feature_profile[each.value.application_priority].id],
     try(each.value.ngfw_security, null) == null ? [] : [sdwan_embedded_security_feature_profile.embedded_security_feature_profile[each.value.ngfw_security].id],
+    try(each.value.sse, null) == null ? [] : [sdwan_sse_feature_profile.sse_feature_profile[each.value.sse].id],
   ])
   policy_versions = length(concat(
     try(each.value.application_priority, null) == null ? [] : local.application_priority_policies_versions[each.value.application_priority],
     try(each.value.ngfw_security, null) == null ? [] : local.embedded_security_policies_versions[each.value.ngfw_security],
+    try(each.value.sse, null) == null ? [] : local.sse_profile_policy_versions[each.value.sse],
     )) == 0 ? null : concat(
     try(each.value.application_priority, null) == null ? [] : local.application_priority_policies_versions[each.value.application_priority],
     try(each.value.ngfw_security, null) == null ? [] : local.embedded_security_policies_versions[each.value.ngfw_security],
+    try(each.value.sse, null) == null ? [] : local.sse_profile_policy_versions[each.value.sse],
   )
   devices = length([for router in local.routers : router if router.policy_group == each.value.name]) == 0 ? null : [
     for router in local.routers : {
       id     = router.chassis_id
       deploy = try(router.policy_group_deploy, local.defaults.sdwan.sites.routers.policy_group_deploy)
-      variables = try(length(router.policy_variables) == 0, true) ? null : [for name, value in router.policy_variables : {
-        name       = name
-        value      = try(tostring(value), null)
-        list_value = try(tolist(value), null)
-      }]
+      variables = (
+        try(length(router.policy_variables) == 0, true) &&
+        try(length(router.cor_saas_entries) == 0, true)
+        ) ? null : concat(
+        try(length(router.policy_variables), 0) == 0 ? [] :
+        [for name, value in router.policy_variables : {
+          name       = name
+          value      = try(tostring(value), null)
+          list_value = try(tolist(value), null)
+        }],
+        try(router.cor_saas_entries, []),
+      )
     } if router.policy_group == each.value.name
   ]
   depends_on = [
@@ -362,5 +371,18 @@ locals {
       # Referenced object versions
       try(local.embedded_security_object_versions[profile.name], []),
     ]))
+  }
+
+  # ============================================================================
+  # Secure Service Edge (SSE) - Policy Versions
+  # ============================================================================
+
+  sse_profile_policy_versions = {
+    for profile in try(local.feature_profiles.sse_profiles, []) : profile.name => flatten([
+      # SSE Zscaler
+      try(profile.zscaler, null) == null ? [] : [sdwan_sse_zscaler_feature.sse_zscaler_feature["${profile.name}-zscaler"].version],
+      # SSE Cisco
+      try(profile.cisco, null) == null ? [] : [sdwan_sse_cisco_feature.sse_cisco_feature["${profile.name}-cisco"].version]
+    ])
   }
 }

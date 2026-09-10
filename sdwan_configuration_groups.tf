@@ -97,6 +97,7 @@ locals {
   other_profile_features_versions = {
     for profile in try(local.feature_profiles.other_profiles, []) : profile.name => flatten([
       try(profile.thousandeyes, null) == null ? [] : [sdwan_other_thousandeyes_feature.other_thousandeyes_feature["${profile.name}-thousandeyes"].version],
+      try(profile.trustsec, null) == null ? [] : [sdwan_other_trustsec_feature.other_trustsec_feature["${profile.name}-trustsec"].version],
       try(profile.ucse, null) == null ? [] : [sdwan_other_ucse_feature.other_ucse_feature["${profile.name}-ucse"].version],
     ])
   }
@@ -142,6 +143,9 @@ locals {
       ]],
       try(profile.dhcp_servers, null) == null ? [] : [for dhcp_server in try(profile.dhcp_servers, []) : [
         sdwan_service_dhcp_server_feature.service_dhcp_server_feature["${profile.name}-${dhcp_server.name}"].version
+      ]],
+      try(profile.dual_router_ha_features, null) == null ? [] : [for dual_router_ha_feature in try(profile.dual_router_ha_features, []) : [
+        sdwan_service_dual_router_ha_feature.service_dual_router_ha_feature["${profile.name}-${dual_router_ha_feature.name}"].version
       ]],
       try(profile.eigrp_features, null) == null ? [] : [for eigrp_feature in try(profile.eigrp_features, []) : [
         sdwan_service_routing_eigrp_feature.service_routing_eigrp_feature["${profile.name}-${eigrp_feature.name}"].version
