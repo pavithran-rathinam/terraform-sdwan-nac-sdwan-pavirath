@@ -194,6 +194,7 @@ module "sdwan" {
 | [sdwan_region_list_policy_object.region_list_policy_object](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/region_list_policy_object) | resource |
 | [sdwan_rewrite_rule_policy_definition.rewrite_rule_policy_definition](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/rewrite_rule_policy_definition) | resource |
 | [sdwan_route_policy_definition.route_policy_definition](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/route_policy_definition) | resource |
+| [sdwan_scope.scope](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/scope) | resource |
 | [sdwan_security_app_hosting_feature_template.security_app_hosting_feature_template](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/security_app_hosting_feature_template) | resource |
 | [sdwan_security_policy.security_policy](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/security_policy) | resource |
 | [sdwan_service_dhcp_server_feature.service_dhcp_server_feature](https://registry.terraform.io/providers/CiscoDevNet/sdwan/latest/docs/resources/service_dhcp_server_feature) | resource |
