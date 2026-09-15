@@ -40,7 +40,7 @@ module "sdwan" {
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.3.0 |
-| <a name="requirement_sdwan"></a> [sdwan](#requirement\_sdwan) | >= 0.11.1 |
+| <a name="requirement_sdwan"></a> [sdwan](#requirement\_sdwan) | ~> 0.11.5 |
 | <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 2.0.1, < 3.0.0 |
 
 ## Inputs
@@ -58,13 +58,14 @@ module "sdwan" {
 |------|-------------|
 | <a name="output_default_values"></a> [default\_values](#output\_default\_values) | All default values. |
 | <a name="output_model"></a> [model](#output\_model) | Full model. |
+| <a name="output_topology_site_resolution"></a> [topology\_site\_resolution](#output\_topology\_site\_resolution) | Named failure for an unresolvable site name, instead of a bare "Invalid index" from local.nh\_site\_name\_to\_id further down.  An output precondition rather than a resource: it fails the plan the same way, and also propagates when this module is used as a child module. |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_local"></a> [local](#provider\_local) | >= 2.3.0 |
-| <a name="provider_sdwan"></a> [sdwan](#provider\_sdwan) | >= 0.11.1 |
+| <a name="provider_sdwan"></a> [sdwan](#provider\_sdwan) | ~> 0.11.5 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Resources
